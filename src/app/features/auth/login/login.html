@@ -1,0 +1,28 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card shadow-lg border-0 rounded-4">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-primary">Connexion</h2>
+          <p class="text-muted">Heureux de vous revoir sur Lien Urbain !</p>
+        </div>
+        
+        <form (ngSubmit)="seConnecter()">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Email</label>
+            <input type="email" class="form-control form-control-lg bg-light" [(ngModel)]="email" name="email" placeholder="nom@exemple.com">
+          </div>
+          <div class="mb-4">
+            <label class="form-label small fw-bold">Mot de passe</label>
+            <input type="password" class="form-control form-control-lg bg-light" [(ngModel)]="password" name="password" placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm rounded-pill">Se connecter</button>
+        </form>
+
+        <div class="text-center mt-4">
+          <p class="small mb-0">Pas encore de compte ? <a href="#" class="text-primary fw-bold text-decoration-none">Inscrivez-vous</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
