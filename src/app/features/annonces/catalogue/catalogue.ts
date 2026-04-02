@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AnnoncesService, Announcement } from '../annonces.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -9,44 +10,28 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './catalogue.html',
   styleUrl: './catalogue.scss'
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit {
+  private annoncesService = inject(AnnoncesService);
+
   recherche: string = '';
-  
- 
-  nouvelleAnnonce = {
-    titre: '',
-    description: '',
-    auteur: 'Moi',
-    categorie: 'Service',
-    couleur: 'primary'
-  };
+  annoncesData: Announcement[] = [];
 
-  // Ta liste de cartes
-  annoncesData = [
-    { titre: 'Aide aux courses', description: 'Je propose mon aide pour faire les courses au supermarché.', auteur: 'Jean-Marc', categorie: 'Service', couleur: 'primary' },
-    { titre: 'Cours de guitare', description: 'Initiation à la guitare acoustique pour débutants.', auteur: 'Sarah', categorie: 'Loisir', couleur: 'success' },
-    { titre: 'Garde de chat', description: 'Je m\'occupe de vos boules de poils pendant vos vacances.', auteur: 'Élodie', categorie: 'Animaux', couleur: 'warning' }
-  ];
-
-  
-  ajouterAnnonce() {
-    if (this.nouvelleAnnonce.titre && this.nouvelleAnnonce.description) {
-      const couleurs: any = { 'Service': 'primary', 'Loisir': 'success', 'Animaux': 'warning' };
-      this.nouvelleAnnonce.couleur = couleurs[this.nouvelleAnnonce.categorie] || 'secondary';
-      
-      this.annoncesData.unshift({ ...this.nouvelleAnnonce });
-      
-   
-      this.nouvelleAnnonce.titre = '';
-      this.nouvelleAnnonce.description = '';
-    }
+  ngOnInit(): void {
+    this.annoncesService.getAll().subscribe({
+      next: (data) => {
+        this.annoncesData = data;
+        console.log('Annonces récupérées :', data);
+      },
+      error: (err) => {
+        console.error('Erreur API :', err);
+      }
+    });
   }
 
-  
   get annonces() {
-    return this.annoncesData.filter(item => 
-      item.titre.toLowerCase().includes(this.recherche.toLowerCase()) ||
-      item.categorie.toLowerCase().includes(this.recherche.toLowerCase())
+    return this.annoncesData.filter(item =>
+      item.title.toLowerCase().includes(this.recherche.toLowerCase()) ||
+      item.category.toLowerCase().includes(this.recherche.toLowerCase())
     );
   }
 }
